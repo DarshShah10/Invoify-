@@ -49,16 +49,14 @@ async function launchBrowser(): Promise<Browser> {
     // use the full `puppeteer` package, which ships its own Chromium.
     const puppeteer = (await import("puppeteer")).default;
     return puppeteer.launch({
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
         headless: true,
     }) as unknown as Promise<Browser>;
 }
 
 function isAlive(browser: Browser): boolean {
-    // `connected` is the modern property; fall back for older typings.
-    if (typeof browser.connected === "boolean") return browser.connected;
-    if (typeof browser.isConnected === "function") return browser.isConnected();
-    return false;
+    return browser.connected;
 }
 
 /**

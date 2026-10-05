@@ -1,48 +1,25 @@
-// Next Google Fonts
-import {
-    Alex_Brush,
-    Dancing_Script,
-    Great_Vibes,
-    Outfit,
-    Parisienne,
-} from "next/font/google";
+import localFont from "next/font/local";
 
-// Default Fonts
-export const outfit = Outfit({
-    subsets: ["latin"],
+// Bundled files keep self-hosted builds independent of Google Fonts.
+export const outfit = localFont({
+    src: [
+        {
+            path: "../node_modules/@fontsource/outfit/files/outfit-latin-400-normal.woff2",
+            weight: "400",
+        },
+        {
+            path: "../node_modules/@fontsource/outfit/files/outfit-latin-500-normal.woff2",
+            weight: "500",
+        },
+        {
+            path: "../node_modules/@fontsource/outfit/files/outfit-latin-600-normal.woff2",
+            weight: "600",
+        },
+        {
+            path: "../node_modules/@fontsource/outfit/files/outfit-latin-700-normal.woff2",
+            weight: "700",
+        },
+    ],
     display: "swap",
     adjustFontFallback: false,
-});
-
-// Signature fonts
-export const dancingScript = Dancing_Script({
-    subsets: ["latin"],
-    weight: "400",
-    variable: "--font-dancing-script",
-    preload: true,
-    display: "swap",
-});
-
-export const parisienne = Parisienne({
-    subsets: ["latin"],
-    weight: "400",
-    variable: "--font-parisienne",
-    preload: true,
-    display: "swap",
-});
-
-export const greatVibes = Great_Vibes({
-    subsets: ["latin"],
-    weight: "400",
-    variable: "--font-great-vibes",
-    preload: true,
-    display: "swap",
-});
-
-export const alexBrush = Alex_Brush({
-    subsets: ["latin"],
-    weight: "400",
-    variable: "--font-alex-brush",
-    preload: true,
-    display: "swap",
 });

@@ -1,0 +1,5 @@
+{
+  "name": "Example Supplier", "address": "Registered address", "pin": "400001", "state": "27", "gstin": "", "email": "", "phone": "",
+  "pan": "", "udyam": "", "officeAddress": "", "officeEmail": "", "officePhone": "", "logo": "", "signature": "",
+  "bankName": "", "accountName": "", "accountNumber": "", "branch": "", "ifsc": "", "terms": "", "declaration": "", "jurisdiction": ""
+}

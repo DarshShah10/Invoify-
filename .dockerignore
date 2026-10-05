@@ -1,0 +1,14 @@
+node_modules
+.git
+.next*
+.env*
+.quote-data
+.twenty-local
+test-results
+playwright-report
+__agent__
+.cache
+tmp
+.claude
+.github
+*.tsbuildinfo

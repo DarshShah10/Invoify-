@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 
 // Components
-import { BaseButton } from "@/app/components";
+import BaseButton from "./BaseButton";
 
 // Icons
 import { Moon, Sun } from "lucide-react";

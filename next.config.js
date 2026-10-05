@@ -1,7 +1,11 @@
-const withNextIntl = require("next-intl/plugin")("./i18n/request.ts");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    output: "standalone",
+    async headers() {
+        return [{ source: "/:path*", headers: [{ key: "Referrer-Policy", value: "no-referrer" }, { key: "X-Content-Type-Options", value: "nosniff" }] }];
+    },
+    distDir: process.env.RF_NEXT_DIST_DIR || ".next-realfilms",
     serverExternalPackages: ["@sparticuz/chromium", "puppeteer-core"],
     webpack: (config) => {
         config.module.rules.push({
@@ -17,4 +21,4 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
     enabled: process.env.ANALYZE === "true",
 });
 
-module.exports = withBundleAnalyzer(withNextIntl(nextConfig));
+module.exports = withBundleAnalyzer(nextConfig);

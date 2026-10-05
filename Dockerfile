@@ -1,46 +1,19 @@
-FROM node:22-alpine AS build
-
+FROM node:24-bookworm-slim AS build
 WORKDIR /app
-
-# `npm ci` installs exactly what package-lock.json pins, so image builds are
-# reproducible — `npm install` was free to resolve newer versions.
+ENV PUPPETEER_SKIP_DOWNLOAD=true NEXT_TELEMETRY_DISABLED=1
 COPY package.json package-lock.json ./
 RUN npm ci
-
 COPY . .
 RUN npm run build
 
-# Drop dev-only packages before they are copied into the runtime image. The
-# `puppeteer` devDependency bundles its own Chromium (hundreds of MB) that
-# production never uses — production runs puppeteer-core with
-# @sparticuz/chromium.
-RUN npm prune --omit=dev
-
-
-FROM node:22-alpine AS production
-
+FROM node:24-bookworm-slim AS runtime
+RUN apt-get update && apt-get install -y --no-install-recommends chromium fonts-liberation fonts-noto-core ca-certificates && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
-
-ENV NODE_ENV=production
-
-# Chromium needs these at runtime; the Alpine base does not ship them.
-RUN apk add --no-cache \
-    chromium \
-    nss \
-    freetype \
-    harfbuzz \
-    ca-certificates \
-    ttf-freefont
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=build --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=build --chown=nextjs:nodejs /app/node_modules ./node_modules
-COPY --from=build --chown=nextjs:nodejs /app/package.json ./package.json
-COPY --from=build --chown=nextjs:nodejs /app/public ./public
-
-USER nextjs
-
+ENV NODE_ENV=production PORT=3000 HOSTNAME=0.0.0.0 PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium NEXT_TELEMETRY_DISABLED=1
+COPY --from=build --chown=node:node /app/.next-realfilms/standalone ./
+COPY --from=build --chown=node:node /app/.next-realfilms/static ./.next-realfilms/static
+COPY --from=build --chown=node:node /app/public ./public
+RUN mkdir -p /var/lib/invoify/sessions && chown -R node:node /var/lib/invoify
+USER node
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["node", "server.js"]

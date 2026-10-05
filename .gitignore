@@ -26,6 +26,8 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env.production
+.env.production.*
 
 # vercel
 .vercel
@@ -51,3 +53,18 @@ yarn-error.log*
 
 # Claude Code local state
 /.claude/settings.local.json
+
+/tmp/pdfs/
+
+/.next-realfilms/
+/.next-validation/
+/.quote-data/
+/.twenty-local/
+
+# Private deployment configuration and agent scratch state
+.env
+.env.*
+!.env.example
+/__agent__/
+/private/
+/backups/
